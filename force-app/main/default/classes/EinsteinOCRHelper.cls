@@ -1,7 +1,8 @@
 public with sharing class EinsteinOCRHelper 
 {
+    private static string AccountId = '';
     private final static string Boundary = '1ff13444ed8140c7a32fc4e6451aa76d';
-    
+
     public static string ContructHttpRequest(string filename) 
     {
         string authToken = AuthHelper.getAccessToken();
@@ -20,6 +21,15 @@ public with sharing class EinsteinOCRHelper
         
         string responseStr = response.getBody();
         system.debug(responseStr);
+
+        if(!string.isNullOrEmpty(AccountId))
+        {
+            Attachment sr = new Attachment();
+            sr.Body = response.getBodyAsBlob();
+            sr.Name = 'einstein_response' + DateTime.Now().format('MM-dd-yyyy-HH-mm-ss-ssss') + '.json';
+            sr.ParentId = AccountId;
+            insert sr;
+        }
 
         return responseStr;
     }
