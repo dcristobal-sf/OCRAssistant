@@ -3,16 +3,12 @@ public with sharing class EinsteinOCRHelper
     private static string authToken;
     private final static string Boundary = '1ff13444ed8140c7a32fc4e6451aa76d';
     
-    
-    public EinsteinOCRHelper(string p_authToken)
-    {
-        authToken = '';
-    }
-    
     public static void ContructHttpRequest(string filename) 
     {
+        string authToken = AuthHelper.getAccessToken();
+        system.debug(authToken);
         HttpRequest request = new HttpRequest();
-        request.setHeader('Authorization', 'Bearer JFITKVSDKZAU4MSRLJIVOUCTLFCEOWCOKJBDGVCZIZDEGT2MKVCFAV2PKRFTKM2YJNLU4UBSIM3UCWCWKZCFETZWJJLDINCYK42ESN2OJRMTGSKGKBLFCVKVK5CEYM2LGVHEUNKYGJAUYNBXJY2E2TJSGRDVARKTKZJES7COIE');
+        request.setHeader('Authorization', 'Bearer ' + authToken);
         request.setHeader('Cache-Control', 'no-cache');
         request.setHeader('Content-Type', GetContentType());
         request.setBodyAsblob(build('https://s.toptests.co.uk/wp-content/uploads/2017/12/uk-driving-licence.jpg'));
