@@ -6,7 +6,7 @@ public with sharing class EinsteinOCRHelper
     public static string ContructHttpRequest(string filename) 
     {
         string authToken = AuthHelper.getAccessToken();
-        system.debug(authToken);
+        
         HttpRequest request = new HttpRequest();
         request.setHeader('Authorization', 'Bearer ' + authToken);
         request.setHeader('Cache-Control', 'no-cache');
@@ -22,7 +22,7 @@ public with sharing class EinsteinOCRHelper
         string responseStr = response.getBody();
         system.debug(responseStr);
 
-        if(!string.isNullOrEmpty(AccountId))
+        if(!string.isBlank(AccountId))
         {
             Attachment sr = new Attachment();
             sr.Body = response.getBodyAsBlob();
@@ -43,6 +43,7 @@ public with sharing class EinsteinOCRHelper
         body += WriteBoundary(EndingType.CrLf);
         Blob bodyBlob = EncodingUtil.base64Decode(body);
         
+        system.debug(bodyBlob.toString());
         return bodyBlob;
     }
     

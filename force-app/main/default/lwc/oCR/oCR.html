@@ -1,0 +1,22 @@
+<template>
+    <lightning-card title="OCR" icon-name="custom:custom14">
+        <div class="slds-m-around_medium">
+            <p>Preview</p>
+            <img src={url} />
+
+            <lightning-input label="Image Url" value={url}></lightning-input>
+            <lightning-button label="Perform!" onclick={handleClick}></lightning-button>
+        </div>
+
+        <template if:true={results}>
+            <div class="slds-m-around_medium">
+                <lightning-textarea label="Results" value={results}></lightning-textarea>
+            </div>
+        </template>
+        <template if:true={error}>
+            <div class="slds-m-around_medium">
+                <p>{error}</p>
+            </div>
+        </template>
+    </lightning-card>
+</template>
