@@ -4,7 +4,7 @@
             <p>Preview</p>
             <img src={url} />
 
-            <lightning-input label="Image Url" value={url}></lightning-input>
+            <lightning-input label="Image Url" value={url} onchange={handleChange}></lightning-input>
             <lightning-button label="Perform!" onclick={handleClick}></lightning-button>
         </div>
 

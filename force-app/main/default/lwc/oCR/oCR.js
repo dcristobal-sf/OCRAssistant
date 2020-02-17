@@ -4,9 +4,13 @@ import { LightningElement, track, api } from 'lwc';
 import performOCR from '@salesforce/apex/OCRController.performOCR';
 
 export default class OCR extends LightningElement {
-    @api url;
+    @track url;
     @track results;
     @track error;
+
+    handleChange(event) {
+        this.url = event.target.value;
+    }
 
     handleClick() {
         console.log(this.url);
