@@ -2,10 +2,16 @@
     <lightning-card title="OCR" icon-name="custom:custom14">
         <div class="slds-m-around_medium">
             <p>Preview</p>
-            <p>https://i.pinimg.com/originals/dd/bf/36/ddbf36e71578fb4be2a76fdf2e07934a.jpg</p>
-            <lightning-input label="Image Url" value={url} onchange={handleChange}></lightning-input>            
-            <canvas id="canvas" width="600" height="600" lwc:dom="manual"></canvas>  
-            <lightning-button label="Perform!" onclick={handleClick}></lightning-button>  
+            <p>Test Images: </p>
+            <ul>
+                <li>https://i.pinimg.com/originals/dd/bf/36/ddbf36e71578fb4be2a76fdf2e07934a.jpg</li>
+                <li>https://files.brightside.me/files/news/part_79/795195/15185501-image-crop-2000x1348-1575874332-728-45259c1ca9-1577192961.jpg</li>
+            </ul>
+            
+            <lightning-button label="Analyse!" onclick={handleClick}></lightning-button>     
+            <lightning-input label="Image Url" value={url} onchange={handleChange}></lightning-input> 
+                    
+            <canvas id="canvas" width="600" height="600"></canvas> 
         </div>
 
         <template if:true={results}>
