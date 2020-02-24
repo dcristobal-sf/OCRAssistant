@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { LightningElement, track, api } from 'lwc';
-//import { refreshApex } from '@salesforce/apex'; refreshApex can only be used with @wire, which can't be used via button press. Not sure on the usecase exactly here, but I don't think we'll need it.
+import { loadScript, loadStyle } from 'lightning/platformResourceLoader';
+import libraries from '@salesforce/resourceUrl/libraries';
 import performOCR from '@salesforce/apex/OCRController.performOCR';
 
 export default class OCR extends LightningElement {
@@ -8,12 +9,24 @@ export default class OCR extends LightningElement {
     @track results;
     @track error;
 
+    renderedCallback() {
+        Promise.all([
+            loadScript(this, libraries + '/jquery-3.4.1.min.js'),
+            loadScript(this, libraries + '/popper.min.js'),
+            loadScript(this, libraries + '/bootstrap.min.js')
+        ]).then(() => { this.scriptsLoaded(); });
+    }
+
+    scriptsLoaded() {
+        var context = $("canvas").getContext("2d");
+        console.log(context);
+    }
+
     handleChange(event) {
         this.url = event.target.value;
     }
 
     handleClick() {
-        console.log(this.url);
         performOCR({url: this.url})
             .then(result => {
                 this.results = result;
