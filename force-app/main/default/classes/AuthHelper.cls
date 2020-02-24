@@ -5,7 +5,8 @@ public with sharing class AuthHelper
     
 	public static String getAccessToken() 
     {
-        string email = 'kreece+einstein@salesforce.com';
+        EinsteinAI_Settings__c settings = EinsteinAI_Settings__c.getOrgDefaults();
+        string email = settings.Einstein_EMail__c;
         List<ContentVersion> items = [SELECT Title, VersionData, CreatedBy.Email FROM ContentVersion where Title='einstein_platform' OR  Title='predictive_services' ORDER BY Title];   
         
         if(!items.isEmpty())
