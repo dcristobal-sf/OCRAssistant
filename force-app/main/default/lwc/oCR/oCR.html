@@ -2,13 +2,10 @@
     <lightning-card title="OCR" icon-name="custom:custom14">
         <div class="slds-m-around_medium">
             <p>Preview</p>
-            <img src={url} />
-            
-                <canvas id="canvas" width="1280" height="720" lwc:dom="manual"></canvas>
-            
-
-            <lightning-input label="Image Url" value={url} onchange={handleChange}></lightning-input>
-            <lightning-button label="Perform!" onclick={handleClick}></lightning-button>
+            <p>https://i.pinimg.com/originals/dd/bf/36/ddbf36e71578fb4be2a76fdf2e07934a.jpg</p>
+            <lightning-input label="Image Url" value={url} onchange={handleChange}></lightning-input>            
+            <canvas id="canvas" width="600" height="600" lwc:dom="manual"></canvas>  
+            <lightning-button label="Perform!" onclick={handleClick}></lightning-button>  
         </div>
 
         <template if:true={results}>
