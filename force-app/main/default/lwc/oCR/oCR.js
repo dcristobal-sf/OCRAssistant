@@ -18,8 +18,8 @@ export default class OCR extends LightningElement {
     }
 
     scriptsLoaded() {
-        var context = $("canvas").getContext("2d");
-        console.log(context);
+        //var context = $("canvas").getContext("2d");
+        //console.log(context);
     }
 
     handleChange(event) {
