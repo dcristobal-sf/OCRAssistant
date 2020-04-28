@@ -1,8 +1,8 @@
 public with sharing class OCRController 
 {
-    @AuraEnabled(cacheable=true)
-    public static string performOCR(string url) 
+    @AuraEnabled(cacheable=false)
+    public static OCRResult performOCRFromUpload(string name, string documentId) 
     {
-        return EinsteinOCRHelper.ContructHttpRequest(url);
+        return EinsteinOCRHelper.getDownloadUrl(name, documentId);
     }
 }

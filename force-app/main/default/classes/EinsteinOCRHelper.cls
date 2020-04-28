@@ -3,15 +3,30 @@ public with sharing class EinsteinOCRHelper
     private static string AccountId = '';
     private final static string Boundary = '1ff13444ed8140c7a32fc4e6451aa76d';
 
-    public static string ContructHttpRequest(string filename) 
+    public static OCRResult getDownloadUrl(string name, string documentId)
+    {
+        List<ContentVersion> versions = [SELECT VersionData, FileType FROM ContentVersion WHERE ContentDocumentId =: documentId];
+
+        if(!versions.isEmpty())
+        {
+            return ContructHttpRequest(versions.get(0));
+        }
+
+        return null;
+    }
+
+    public static OCRResult ContructHttpRequest(ContentVersion contentVersion) 
     {
         string authToken = AuthHelper.getAccessToken();
+        OCRResult res = new OCRResult();
+        
+        System.debug(authToken);
         
         HttpRequest request = new HttpRequest();
         request.setHeader('Authorization', 'Bearer ' + authToken);
         request.setHeader('Cache-Control', 'no-cache');
         request.setHeader('Content-Type', GetContentType());
-        request.setBodyAsblob(build(filename));
+        request.setBodyAsblob(build(contentVersion));
         request.setMethod('POST');
         
         request.setEndpoint('https://api.einstein.ai/v2/vision/ocr');
@@ -19,8 +34,9 @@ public with sharing class EinsteinOCRHelper
         Http http = new Http();
         HTTPResponse response = http.send(request);
         
-        string responseStr = response.getBody();
-        system.debug(responseStr);
+        res.result = response.getBody();
+        res.imageBase64 = EncodingUtil.base64Encode(contentVersion.VersionData);
+        res.imageType = contentVersion.FileType;
 
         if(!string.isBlank(AccountId))
         {
@@ -31,19 +47,21 @@ public with sharing class EinsteinOCRHelper
             insert sr;
         }
 
-        return responseStr;
+        return res;
     }
     
-    public static Blob build(string filename) {
+    public static Blob build(ContentVersion contentVersion) {
         String body = '';
         body += WriteBoundary();
         body += WriteBodyParameter('modelId', 'OCRModel');
         body += WriteBoundary();
-        body += WriteBodyParameter('sampleLocation', filename);
+        //body += WriteBodyParameter('sampleLocation', filename);
+
+        body += WriteBodyParameter('sampleBase64Content', EncodingUtil.base64Encode(contentVersion.VersionData));
+
         body += WriteBoundary(EndingType.CrLf);
         Blob bodyBlob = EncodingUtil.base64Decode(body);
         
-        system.debug(bodyBlob.toString());
         return bodyBlob;
     }
     

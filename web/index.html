@@ -51,8 +51,6 @@
             $(".btnSample").click(function () {
                 var imgUrl = $(this).data('url');  
                 var ocrDataKey = $(this).data('ocrdatakey');
-                //log(ocrDataKey);  
-                //log(OcrDataCollection);  
                 $('#imageUrl').val(imgUrl);
                 var OcrData = OcrDataCollection[ocrDataKey];
                 AnalyseImage(OcrData);
@@ -96,12 +94,9 @@
 
         function AnnotateCanvas(input) {
 
-            log(input.probabilities.length);
             for (var i = 0; i < input.probabilities.length; i++) {
                 var boxData = input.probabilities[i];
-                log(boxData);
-                context.beginPath();
-                //context.fillStyle = "rgba(255, 255, 0, 0.5)";               
+                context.beginPath();               
                 context.lineWidth = "4";
                 context.strokeStyle = "yellow";
                 context.rect(boxData.boundingBox.minX, boxData.boundingBox.minY, boxData.boundingBox.maxX - boxData.boundingBox.minX, boxData.boundingBox.maxY - boxData.boundingBox.minY);
