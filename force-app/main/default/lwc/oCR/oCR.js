@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { LightningElement, track, api } from 'lwc';
+import { updateRecord, getRecordNotifyChange } from 'lightning/uiRecordApi';
 import performOCRFromUpload from '@salesforce/apex/OCRController.performOCRFromUpload';
 import Id from '@salesforce/user/Id';
 
@@ -9,12 +10,14 @@ export default class OCR extends LightningElement {
     @track imageBase64;
     @track imageType;
     @track ocrResult;
+    @track ocrText;
+    @api recordId;
 
     @track error;
     userId = Id;
 
     get acceptedFormats() {
-        return ['.jpg', '.png'];
+        return ['.jpg', '.png', '.pdf'];
     }
 
     handleUploadFinished(event) {
@@ -24,27 +27,31 @@ export default class OCR extends LightningElement {
             var name = p.name;
             var documentId = p.documentId;
 
-            performOCRFromUpload({name: name, documentId: documentId})
+            performOCRFromUpload({name: name, documentId: documentId, recordId: this.recordId})
             .then(result => {
                 
                 this.ocrResult = result.result;
                 this.imageBase64 = result.imageBase64;
                 this.imageType = result.imageType;
+                this.ocrText = result.text;
 
                 this.renderImage();
                 setTimeout(() => {  
 
-                    let data = JSON.parse(this.ocrResult);
+                    let data = JSON.parse(this.ocrText);
                     for (let i = 0; i < data.probabilities.length; i++) {
                         let boxData = data.probabilities[i];
                         context.beginPath();              
                         context.lineWidth = "2";
-                        context.strokeStyle = "yellow";
+                        context.strokeStyle = "red";
                         context.rect(boxData.boundingBox.minX, boxData.boundingBox.minY, boxData.boundingBox.maxX - boxData.boundingBox.minX, boxData.boundingBox.maxY - boxData.boundingBox.minY);
                         context.stroke();
                     }
 
                 }, 200);
+   
+                // Refresh Record Page
+                getRecordNotifyChange([{recordId: this.recordId}])
             })
             .catch(error => {
                 this.error = error.body.message;

@@ -2,7 +2,7 @@
     <lightning-card>
         <div class="slds-m-around_medium">
             <lightning-file-upload
-                label="Upload Image"
+                label="Upload Document"
                 name="fileUploader"
                 accept={acceptedFormats}
                 record-id={userId}
@@ -14,14 +14,21 @@
             <!--<lightning-input label="Image Url" value={url} onchange={handleChange}></lightning-input> -->
                 
             <br />
-            <canvas id="canvas" width="600" height="600"></canvas> 
+        
+            <canvas id="canvas" width="600" height="600"></canvas>
+            
         </div>
 
-        <template if:true={ocrResult}>
+        <!-- template if:true={ocrResult}>
             <div class="slds-m-around_medium">
                 <lightning-textarea label="Results" value={ocrResult}></lightning-textarea>
             </div>
-        </template>
+        </template -->
+        <!-- template if:true={ocrText} >
+            <div class="slds-m-around_medium">
+                <lightning-textarea label="Text" value={ocrText}></lightning-textarea>
+            </div>
+        </template -->
         <template if:true={error}>
             <div class="slds-m-around_medium">
                 <p>{error}</p>

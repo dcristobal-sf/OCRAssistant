@@ -8,5 +8,8 @@ public with sharing class OCRResult
 
     @AuraEnabled
     public string result { get; set; }
+    
+    @AuraEnabled
+    public string text { get; set; }
 
 }
